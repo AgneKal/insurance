@@ -1,30 +1,31 @@
-<div class="card mt-5">
+<div class="card mt-3">
     <div class="card-header">
-        Naujas savininkas
+        Pridėti naują savininką
     </div>
     <div class="card-body">
-        <div class="mb-3">
-            <label for="" class="form-label">Vardas</label>
-            <input type="text" name="" id="" class="form-control" [(ngModel)]="name">
-        </div>
-        <div class="mb-3">
-            <label for="" class="form-label">Pavardė</label>
-            <input type="text" name="" id="" class="form-control" [(ngModel)]="surname">
-        </div>
-        <div class="mb-3">
-            <label for="" class="form-label">Telefono Nr.</label>
-            <input type="text" name="" id="" class="form-control" [(ngModel)]="phone">
-        </div>
-        <div class="mb-3">
-            <label for="" class="form-label">El. paštas</label>
-            <input type="text" name="" id="" class="form-control" [(ngModel)]="email">
-        </div>
-        <div class="mb-3">
-            <label for="" class="form-label">Adresas</label>
-            <input type="text" name="" id="" class="form-control" [(ngModel)]="address">
-        </div>
-        <button class="btn btn-success" type="submit">Įrašyti</button>
+        <form (ngSubmit)="ownerSubmit(f)" #f="ngForm">
+            <div class="mb-3">
+                <label for="" class="form-label">Vardas</label>
+                <input type="text" class="form-control" name="name" value="" ngModel>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Pavardė</label>
+                <input type="text" class="form-control" name="surname" value="" ngModel>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Telefonas</label>
+                <input type="text" class="form-control" name="phone" value="" ngModel>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">El. paštas</label>
+                <input type="text" class="form-control" name="email" value="" ngModel>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Adresas</label>
+                <input type="text" class="form-control" name="address" value="" ngModel>
+            </div>
 
-
+            <button class="btn btn-success" type="submit">Pridėti</button>
+        </form>
     </div>
 </div>
