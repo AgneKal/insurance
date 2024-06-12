@@ -25,4 +25,8 @@ export class OwnersService {
     return this.http.put<Owner>('http://localhost:2999/owners/', owner);
   }
 
+  public deleteOwner(id: number){
+    return this.http.delete('http://localhost:2999/owners/'+id);
+  }
+
 }

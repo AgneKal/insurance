@@ -11,30 +11,50 @@ export class OwnersController {
     static async getOwner(req:any, res:any) {
         const sql = "SELECT * FROM owners WHERE id=?";
         const [result] = await pool.query<Owner[]>(sql, [req.params.id]);
-        res.json(result[0]);
+        if(result.length === 0){
+            res.status(404).json({
+                'text': 'Pateiktas įrašas nerastas'
+            })
+        } else {
+            res.json(result[0]);
+        }
     }
 
     static async insert(req:any, res:any){
         const sql = "INSERT INTO owners(name, surname, phone, email, address) VALUES (?, ?, ?, ?, ?)";
         await pool.query(sql, [req.body.name, req.body.surname, req.body.phone, req.body.email, req.body.address]);
-        res.json({
-            "success":true
+        res.status(201).json({
+            "success": true
         })
     }
 
     static async update(req:any, res:any){
-        const sql = "UPDATE owners SET name=?, surname=?, phone=?, email=?, address=? WHERE id=?"
-        await pool.query(sql, [req.body.name, req.body.surname, req.body.phone, req.body.email, req.body.address, req.body.id]);
-        res.json({
-            "success":true
-        })
+        const sql = "UPDATE owners SET name=?, surname=?, phone=?, email=?, address=? WHERE id=?";
+
+        // sudėti validacijas
+        // if(isNaN(req.body.price)) {
+        //     return res.status(400).json({
+        //         'text': 'Kaina privalo būti skaičius'
+        //     });
+        // }
+
+        try{
+            await pool.query(sql, [req.body.name, req.body.surname, req.body.phone, req.body.email, req.body.address, req.body.id]);
+            res.json({
+                "success": true
+            });
+        } catch (error){
+            res.status(500).json({
+            'text': 'Įvyko atnaujinimo klaida'
+            })
+        }
     }
 
     static async delete(req:any, res:any){
         const sql = "DELETE FROM owners WHERE id=?"
-        await pool.query(sql, [req.body.id]);
+        await pool.query(sql, [req.params.id]);
         res.json({
-            "success":true
+            "success": true
         })
     }
 }

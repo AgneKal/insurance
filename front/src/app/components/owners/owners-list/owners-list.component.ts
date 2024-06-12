@@ -14,9 +14,19 @@ import { OwnersService } from '../../../services/owners.service';
 export class OwnersListComponent {
   public owners: Owner[] = [];
 
-    constructor(private ownersService: OwnersService){
-    ownersService.getOwners().subscribe((data) => {
+  private loadOwners(){
+    this.ownersService.getOwners().subscribe((data) => {
       this.owners = data;
+    });
+  }
+
+  constructor(private ownersService: OwnersService){
+    this.loadOwners();
+  }
+
+  public deleteOwner(id: number){
+    this.ownersService.deleteOwner(id).subscribe((data) => {
+      this.loadOwners();
     });
   }
 
