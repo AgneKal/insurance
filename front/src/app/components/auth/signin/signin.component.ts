@@ -1,27 +1,66 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-signin',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.css'
 })
 export class SigninComponent {
+  public signinForm: FormGroup;
+  // public passwordRepeat: string = '';
+  public passwordsMatch: boolean = true;
 
   constructor(private authService: AuthService){
-
+    this.signinForm = new FormGroup({
+      'email': new FormControl(null, [Validators.required, this.validateEmail]),
+      'name': new FormControl(null, [Validators.required, Validators.minLength(2), Validators.maxLength(30)]),
+      'password': new FormControl(null, [Validators.required, this.validatePassword]),
+    })
   }
 
-  public onRegister(f: NgForm){
-    console.log(f.form.value);
-    this.authService.registerUser(f.form.value).subscribe({
+  public onRegister(){
+    this.authService.registerUser(this.signinForm.value).subscribe({
       next: (data) => {
         console.log(data);
       }
     });
   }
+
+  validateEmail(control: FormControl): ValidationErrors | null {
+    const email: string = control.value;
+    const pattern = /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
+      if (pattern.test(email)){
+        return null;
+      } else {
+        return {error: 'El. pašto adresas neatitinka el. pašto adreso formato'};
+      }
+  }
+
+  validatePassword(control: FormControl): ValidationErrors | null {
+    const password: string = control.value;
+
+    const pattern = /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/;
+      if (pattern.test(password)){
+        return null;
+      } else {
+        return {error: 'Slaptažodis neatitinka taisyklių'};
+      }
+  }
+
+  comparePasswords(passwordRepeat: string | null) {
+      const password = this.signinForm.get('password')?.value;
+      if (password != passwordRepeat) {
+        this.passwordsMatch = false;
+      } else {
+        this.passwordsMatch = true;
+      }
+  }
+
+
+
 }

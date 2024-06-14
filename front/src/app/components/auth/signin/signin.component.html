@@ -3,24 +3,42 @@
         <div class="card">
             <div class="card-header">Registruotis į sistemą</div>
             <div class="card-body">
-                <form (ngSubmit)="onRegister(f)" #f="ngForm">
+                <form [formGroup]="signinForm" (ngSubmit)="onRegister()">
                     <div class="mb-3">
                         <label for="" class="form-label">El. pašto adresas</label>
-                        <input type="text" name="email" class="form-control" ngModel required maxlength="64" email>
+                        <div class="col-sm">
+                            <input class="form-control" [class.is-invalid]="!signinForm.get('email')?.valid && signinForm.get('email')?.touched" formControlName="email">
+                            <div class="helper-block mt-2 text-danger" *ngIf="!signinForm.get('email')?.valid && signinForm.get('email')?.touched">
+                                El. paštas neįvestas arba neatitinka el. pašto adreso reikalavimų
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">Vartotojo vardas</label>
-                        <input type="text" name="name" class="form-control" ngModel minlength="2" maxlength="64" pattern="[a-zA-Z]*">
+                        <div class="col-sm">
+                            <input class="form-control" [class.is-invalid]="!signinForm.get('name')?.valid && signinForm.get('name')?.touched" formControlName="name">
+                            <div class="helper-block mt-2 text-danger" *ngIf="!signinForm.get('name')?.valid && signinForm.get('name')?.touched">
+                                Vardas yra privalomas laukas (2-30 simbolių)
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">Slaptažodis</label>
-                        <input type="password" name="password" class="form-control" ngModel>
+                        <div class="col-sm">
+                            <input type="password" class="form-control" [class.is-invalid]="!signinForm.get('password')?.valid && signinForm.get('password')?.touched" formControlName="password">
+                            <div class="helper-block mt-2 text-danger" *ngIf="!signinForm.get('password')?.valid && signinForm.get('password')?.touched">
+                                Slaptažodis privalomas (turi turėti bent po vieną: skaičių, mažąją raidę, didžiąją raidę, simbolį, būti 8-12 ilgio)
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">Pakartokite slaptažodį</label>
-                        <input type="password" name="" class="form-control">
+                        <input type="password" class="form-control" id="passwordReapeat" required #passwordRepeat (input)="comparePasswords(passwordRepeat.value)" [class.is-invalid]="!passwordsMatch">
+                        <div class="helper-block mt-2 text-danger" *ngIf="!passwordsMatch">
+                            Slaptažodis nesutampa
+                        </div>
                     </div>
-                    <button class="btn btn-success">Registruotis</button>
+                    <button class="btn btn-success" [disabled]="signinForm.invalid || !passwordRepeat.value || !passwordsMatch">Registruotis</button>
                 </form>
             </div>
         </div>

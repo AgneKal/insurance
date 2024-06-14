@@ -14,6 +14,8 @@ export class AuthController {
         const sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
         await pool.query(sql, [name, email, password])
 
+        
+
         res.json({"status" : "OK"})
     }
 
