@@ -12,7 +12,6 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class SigninComponent {
   public signinForm: FormGroup;
-  // public passwordRepeat: string = '';
   public passwordsMatch: boolean = true;
 
   constructor(private authService: AuthService){

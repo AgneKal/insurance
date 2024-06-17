@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Owner } from '../models/owner';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OwnersService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   public getOwners() {
     return this.http.get<Owner[]>('http://localhost:2999/owners/');

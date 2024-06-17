@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ import { AuthService } from '../../../services/auth.service';
 export class LoginComponent {
   public loginForm: FormGroup;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
     this.loginForm = new FormGroup({
       'email': new FormControl(null),
       'password': new FormControl(null)
@@ -22,7 +23,10 @@ export class LoginComponent {
 
   public onLogin() {
     this.authService.loginUser(this.loginForm.value).subscribe({
-      next: (data) => {console.log(data);}
+            next: (data) => {
+        console.log(data);
+        this.router.navigate(['/']);
+      }
     })
   }
 

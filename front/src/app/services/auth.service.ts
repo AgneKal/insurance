@@ -1,13 +1,21 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
+import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  public user: User | null = null;
+  public onLoginStatusChange = new EventEmitter<boolean>();
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    const user = localStorage.getItem('user');
+    if (user != null){
+      this.user = JSON.parse(user);
+    }
+  }
 
   public registerUser(user: User) {
     console.log("Registruojame naują vartotoją");
@@ -15,7 +23,22 @@ export class AuthService {
   }
 
   public loginUser(user: User) {
-    return this.httpClient.post("http://localhost:2999/auth/login", user)
+    return this.httpClient.post<User>("http://localhost:2999/auth/login", user)
+      .pipe(tap((response)=>{
+        this.user = response;
+        localStorage.setItem('user', JSON.stringify(this.user));
+        this.onLoginStatusChange.emit(true);
+      }))
+  }
+
+  public logOut(){
+    this.user = null;
+    localStorage.removeItem('user');
+    this.onLoginStatusChange.emit(false);
+  }
+
+  public isLoggedin(){
+    return (this.user != null && this.user.token != null);
   }
 
 

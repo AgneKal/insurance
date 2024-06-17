@@ -2,6 +2,10 @@ import { pool } from "../db/connect";
 import { Owner } from "../models/owner";
 
 export class OwnersController {
+
+
+    constructor(){}
+
     static async getAll(req:any, res:any) {
         const sql = "SELECT * FROM owners";
         const [result] = await pool.query<Owner[]>(sql);
