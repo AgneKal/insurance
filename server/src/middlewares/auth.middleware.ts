@@ -5,7 +5,7 @@ const authMiddleware = ((req: any, res: any, next: any) => {
         const token = req.headers.auth;
         jwt.verify(token, 'kk5-sam+54545asdas5d4s58');
         next();
-    } catch (error){
+    } catch (error) {
         return res.status(401).json({
             'text': 'Nepateiktas arba neteisingas JWT'
         });

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Owner } from '../../../models/owner';
 import { OwnersService } from '../../../services/owners.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-owners-list',
@@ -20,7 +21,7 @@ export class OwnersListComponent {
     });
   }
 
-  constructor(private ownersService: OwnersService){
+  constructor(private ownersService: OwnersService, public authService: AuthService){
     this.loadOwners();
   }
 

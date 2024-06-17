@@ -13,5 +13,9 @@ export class ErrorComponent {
   public isError: boolean = false;
 
   @Input()
-  public text: string = '';
+  public text: String = '';
+
+  public onCloseError(){
+    this.isError=false;
+  }
 }

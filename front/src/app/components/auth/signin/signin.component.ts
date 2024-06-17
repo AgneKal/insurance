@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
+import { ErrorService } from '../../../services/error.service';
 
 @Component({
   selector: 'app-signin',
@@ -14,7 +15,7 @@ export class SigninComponent {
   public signinForm: FormGroup;
   public passwordsMatch: boolean = true;
 
-  constructor(private authService: AuthService){
+  constructor(private authService: AuthService, private errorService: ErrorService){
     this.signinForm = new FormGroup({
       'email': new FormControl(null, [Validators.required, this.validateEmail]),
       'name': new FormControl(null, [Validators.required, Validators.minLength(2), Validators.maxLength(30)]),
@@ -26,6 +27,9 @@ export class SigninComponent {
     this.authService.registerUser(this.signinForm.value).subscribe({
       next: (data) => {
         console.log(data);
+      },
+      error:(error)=>{
+        this.errorService.errorEmitter.emit(error.error.text);
       }
     });
   }

@@ -5,11 +5,13 @@ import { OwnersListComponent } from './components/owners/owners-list/owners-list
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { SigninComponent } from './components/auth/signin/signin.component';
 import { LoginComponent } from './components/auth/login/login.component';
+import { viewGuard } from './guards/view.guard';
+import { editGuard } from './guards/edit.guard';
 
 export const routes: Routes = [
-    {path: 'owners/list', component: OwnersListComponent},
-    {path: 'owners/add', component: AddOwnerComponent},
-    {path: 'owners/:id', component: UpdateOwnerComponent},
+    {path: 'owners/list', component: OwnersListComponent, canActivate: [viewGuard]},
+    {path: 'owners/add', component: AddOwnerComponent, canActivate: [editGuard]},
+    {path: 'owners/:id', component: UpdateOwnerComponent, canActivate: [editGuard]},
 
     {path: "auth/signin", component: SigninComponent},
     {path: "auth/login", component: LoginComponent},

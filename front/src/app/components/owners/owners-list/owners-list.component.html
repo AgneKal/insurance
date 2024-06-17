@@ -13,7 +13,7 @@
                         <th>Telefonas</th>
                         <th>El. paštas</th>
                         <th>Adresas</th>
-                        <th>Veiksmai</th>
+                        <th *ngIf="authService.canEdit()">Veiksmai</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,7 +24,7 @@
                         <td>{{ owner.phone }}</td>
                         <td>{{ owner.email }}</td>
                         <td>{{ owner.address }}</td>
-                        <td>
+                        <td *ngIf="authService.canEdit()">
                             <a href="" class="btn btn-success mx-3 btn-sm" [routerLink]="['/owners', owner.id]">Redaguoti</a>
                             <button class="btn btn-danger btn-sm" (click)="deleteOwner(owner.id!)">Ištrinti</button>
                         </td>
