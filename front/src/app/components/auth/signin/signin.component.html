@@ -33,7 +33,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">Pakartokite slaptažodį</label>
-                        <input type="password" class="form-control" id="passwordReapeat" required #passwordRepeat (input)="comparePasswords(passwordRepeat.value)" [class.is-invalid]="!passwordsMatch">
+                        <input type="password" class="form-control" required #passwordRepeat (input)="comparePasswords(passwordRepeat.value)" [class.is-invalid]="!passwordsMatch">
                         <div class="helper-block mt-2 text-danger" *ngIf="!passwordsMatch">
                             Slaptažodis nesutampa
                         </div>
