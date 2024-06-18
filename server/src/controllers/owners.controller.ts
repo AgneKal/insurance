@@ -3,16 +3,20 @@ import { Owner } from "../models/owner";
 
 export class OwnersController {
 
-
     constructor(){}
 
-    static async getAll(req:any, res:any) {
+    static async getAll(req: any, res: any) {
+        if (req.user.type > 2){
+            return res.status(400).json({
+                'text': "Neturite teisių matyti įrašų"
+            })
+        }
         const sql = "SELECT * FROM owners";
         const [result] = await pool.query<Owner[]>(sql);
         res.json(result)
     }
 
-    static async getOwner(req:any, res:any) {
+    static async getOwner(req: any, res: any) {
         const sql = "SELECT * FROM owners WHERE id=?";
         const [result] = await pool.query<Owner[]>(sql, [req.params.id]);
         if(result.length === 0){
@@ -24,7 +28,7 @@ export class OwnersController {
         }
     }
 
-    static async insert(req:any, res:any){
+    static async insert(req: any, res: any){
         const sql = "INSERT INTO owners(name, surname, phone, email, address) VALUES (?, ?, ?, ?, ?)";
         await pool.query(sql, [req.body.name, req.body.surname, req.body.phone, req.body.email, req.body.address]);
         res.status(201).json({
@@ -32,15 +36,8 @@ export class OwnersController {
         })
     }
 
-    static async update(req:any, res:any){
+    static async update(req: any, res: any){
         const sql = "UPDATE owners SET name=?, surname=?, phone=?, email=?, address=? WHERE id=?";
-
-        // sudėti validacijas
-        // if(isNaN(req.body.price)) {
-        //     return res.status(400).json({
-        //         'text': 'Kaina privalo būti skaičius'
-        //     });
-        // }
 
         try{
             await pool.query(sql, [req.body.name, req.body.surname, req.body.phone, req.body.email, req.body.address, req.body.id]);
@@ -54,7 +51,7 @@ export class OwnersController {
         }
     }
 
-    static async delete(req:any, res:any){
+    static async delete(req: any, res: any){
         const sql = "DELETE FROM owners WHERE id=?"
         await pool.query(sql, [req.params.id]);
         res.json({
