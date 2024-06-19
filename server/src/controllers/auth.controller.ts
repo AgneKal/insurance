@@ -62,6 +62,7 @@ export class AuthController {
             );
     
             res.json({
+                'id': user.id,
                 'name': user.name,
                 'email': user.email,
                 'token': token,

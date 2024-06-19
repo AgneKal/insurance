@@ -10,6 +10,7 @@ import { editGuard } from './guards/edit.guard';
 import { ListUsersComponent } from './components/users/list-users/list-users.component';
 import { adminGuard } from './guards/admin.guard';
 import { UpdateUserComponent } from './components/users/update-user/update-user.component';
+import { ProfileComponent } from './components/users/profile/profile.component';
 
 export const routes: Routes = [
     {path: 'owners/list', component: OwnersListComponent, canActivate: [viewGuard]},
@@ -21,6 +22,10 @@ export const routes: Routes = [
 
     {path: "auth/signin", component: SigninComponent},
     {path: "auth/login", component: LoginComponent},
+
+    {path: "profile", component: ProfileComponent,
+        //reikia guardo ar prisijungęs
+    },
 
     {path: '', component: HomePageComponent},
 ];

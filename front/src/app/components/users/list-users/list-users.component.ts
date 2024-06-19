@@ -12,12 +12,25 @@ import { RouterModule } from '@angular/router';
   styleUrl: './list-users.component.css'
 })
 export class ListUsersComponent {
-  public users: User[] = [];
-  constructor (private usersService: UsersService){
+  public users: User[] =[];
+  private loadData(){
     this.usersService.getUsers().subscribe({
-      next:(users) => {
-        this.users = users
+      next: (users) => {
+        this.users = users;
       }
     });
   }
+
+  constructor(private usersService: UsersService){
+    this.loadData();
+  }
+
+    public onDeleteClick(id: number){
+    this.usersService.deleteUser(id).subscribe({
+      next: (result) => {
+        this.loadData();
+      }
+    })
+  }
+
 }

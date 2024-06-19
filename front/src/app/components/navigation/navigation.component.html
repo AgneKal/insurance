@@ -24,6 +24,8 @@
         <div class="d-flex">
             <a routerLink="/auth/signin" class="btn btn-info mx-3" *ngIf="!isLoggedin">Registruotis</a>
             <a routerLink="/auth/login" class="btn btn-success" *ngIf="!isLoggedin">Prisijungti</a>
+
+            <a routerLink="/profile" class="btn btn-success mx-3" *ngIf="isLoggedin">Vartotojo profilis</a>
             <button class="btn btn-primary" (click)="logoutClick()" *ngIf="isLoggedin">Atsijungti</button>
         </div>
     </div>

@@ -13,26 +13,26 @@ import { UsersService } from '../../../services/users.service';
 })
 export class UpdateUserComponent {
 
-  public id?:number;
-  public name:String="";
-  public email:String="";
-  public password:String="";
-  public type:number=0;
+  public id?: number;
+  public name: String = "";
+  public email: String = "";
+  public password: String = "";
+  public type: number = 0;
 
   constructor (private route:ActivatedRoute, private router:Router, private usersService:UsersService){
-    this.id=this.route.snapshot.params['id'];
+    this.id = this.route.snapshot.params['id'];
     this.usersService.getUser(this.id!).subscribe({
-      next:(user)=>{
-        this.name=user.name!;
-        this.email=user.email;
-        this.type=user.type!;
+      next:(user) => {
+        this.name = user.name!;
+        this.email = user.email;
+        this.type = user.type!;
       }
     })
   }
 
-  public userSubmit(form:NgForm){
+  public userSubmit(form: NgForm){
     this.usersService.updateUser({id:this.id, ...form.form.value}).subscribe({
-      next:(data)=>{
+      next:(data) => {
         this.router.navigate(['users','list']);
       }
     })
